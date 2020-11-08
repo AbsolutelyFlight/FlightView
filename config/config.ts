@@ -2,10 +2,29 @@
 import { defineConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
+import path from 'path';
 
 const { REACT_APP_ENV } = process.env;
 
+const cesiumSource = 'node_modules/cesium/Source';
+const cesiumWorkers = '../Build/Cesium/Workers';
+
+
 export default defineConfig({
+  copy: [
+    {
+      from: path.join(cesiumSource, cesiumWorkers),
+      to: 'Workers',
+    },
+    {
+      from: path.join(cesiumSource, 'Assets'),
+      to: 'Assets',
+    },
+    {
+      from: path.join(cesiumSource, 'Widgets'),
+      to: 'Widgets',
+    }
+  ],
   hash: true,
   antd: {},
   dva: {
@@ -24,6 +43,13 @@ export default defineConfig({
   targets: {
     ie: 11,
   },
+  alias: {
+    'cesium': path.resolve(__dirname, '../node_modules/cesium/Source'),
+  },
+  define: {
+    CESIUM_BASE_URL: './'
+  },
+  
   // umi routes: https://umijs.org/docs/routing
   routes: [
     {
