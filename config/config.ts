@@ -11,20 +11,22 @@ const cesiumWorkers = '../Build/Cesium/Workers';
 
 
 export default defineConfig({
-  copy: [
-    {
-      from: path.join(cesiumSource, cesiumWorkers),
-      to: 'Workers',
-    },
-    {
-      from: path.join(cesiumSource, 'Assets'),
-      to: 'Assets',
-    },
-    {
-      from: path.join(cesiumSource, 'Widgets'),
-      to: 'Widgets',
-    }
-  ],
+  // copy: [
+  //   {
+  //     from: path.join(cesiumSource, cesiumWorkers),
+  //     to: 'Workers',
+  //   },
+  //   {
+  //     from: path.join(cesiumSource, 'Assets'),
+  //     to: 'Assets',
+  //   },
+  //   {
+  //     from: path.join(cesiumSource, 'Widgets'),
+  //     to: 'Widgets',
+  //   }
+  // ],
+  headScripts: ['https://cesiumjs.org/releases/1.75/Build/Cesium/Cesium.js'],
+  // links: ['https://cesiumjs.org/releases/1.75/Build/Cesium/Widgets/widgets.css'],
   hash: true,
   antd: {},
   dva: {

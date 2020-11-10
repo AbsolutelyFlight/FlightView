@@ -7,6 +7,23 @@
   box-shadow: @card-shadow;
 }
 
+// .cesiumContainer {
+//   height: 600px;
+// }
+
 .cesiumContainer {
-  height: 600px;
+  // height: 700px;
+  :global{
+    .cesium-viewer  {
+      height: 700px;
+      overflow: auto;
+    }
+    .cesium-viewer-cesiumWidgetContainer {
+      height: 668px;
+    }
+
+   
+  }
+  
+
 }

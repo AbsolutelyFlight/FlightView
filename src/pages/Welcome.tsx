@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Card } from 'antd';
-import * as  Cesium from 'cesium/Cesium';
-import 'cesium/Widgets/widgets.css'
+// import { Card } from 'antd';
+// import * as  Cesium from 'cesium/Cesium';
+import 'cesium/Widgets/widgets.css';
 import styles from './Welcome.less';
 
 
@@ -12,12 +12,11 @@ import styles from './Welcome.less';
 
 export default (): React.ReactNode => {
 
-  useEffect(() => {
+  useEffect( () => {
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5NWI4ZGI3Zi0xYmM1LTQ2NmUtODBiZi05YWJiN2IzY2M4MTAiLCJpZCI6MzY2OTQsImlhdCI6MTYwMzkzMzY5Mn0.2LDJvHeCrCtf1_gyUuToe41PJYntAPAErRJowGcffD8';
       
 
   // Get your token from https://cesium.com/ion/tokens
-    Cesium.Ion.defaultAccessToken = 'your_token_here';
 
     // STEP 4 CODE (replaces steps 2 and 3)
     // Keep your `Cesium.Ion.defaultAccessToken = 'your_token_here'` line from before here. 
@@ -74,7 +73,7 @@ export default (): React.ReactNode => {
     // STEP 6 CODE (airplane entity)
     async function loadModel() {
       // Load the glTF model from Cesium ion.
-      const airplaneUri = await Cesium.IonResource.fromAssetId();
+      const airplaneUri = await Cesium.IonResource.fromAssetId('181708');
       const airplaneEntity = viewer.entities.add({
         availability: new Cesium.TimeIntervalCollection([ new Cesium.TimeInterval({ start: start, stop: stop }) ]),
         position: positionProperty,
@@ -92,8 +91,8 @@ export default (): React.ReactNode => {
 
   });
   return (<PageContainer>
-    <Card>
-      <div id="cesiumContainer" className={styles.cesiumContainer} />
-    </Card>
+    {/* <Card> */}
+      <div id="cesiumContainer" className={styles.cesiumContainer}  />
+    {/* </Card> */}
   </PageContainer>)
 }
