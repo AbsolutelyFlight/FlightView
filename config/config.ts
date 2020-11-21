@@ -9,6 +9,8 @@ const { REACT_APP_ENV } = process.env;
 const cesiumSource = 'node_modules/cesium/Source';
 const cesiumWorkers = '../Build/Cesium/Workers';
 
+console.log('process.env.usePub:::', process.env.usePub);
+
 
 export default defineConfig({
   // copy: [
@@ -49,7 +51,8 @@ export default defineConfig({
     'cesium': path.resolve(__dirname, '../node_modules/cesium/Source'),
   },
   define: {
-    CESIUM_BASE_URL: './'
+    CESIUM_BASE_URL: './',
+    BASE_URL: process.env.usePub? '/api' : 'http://localhost:8080'
   },
   
   // umi routes: https://umijs.org/docs/routing
