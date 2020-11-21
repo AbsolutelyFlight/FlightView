@@ -1,0 +1,59 @@
+@import '~antd/lib/style/themes/default.less';
+
+.pre {
+  margin: 12px 0;
+  padding: 12px 20px;
+  background: @input-bg;
+  box-shadow: @card-shadow;
+}
+
+// .cesiumContainer {
+//   height: 600px;
+// }
+.tableContainer {
+  position: absolute;
+  width: 50%;
+  height: 560px;
+  padding: 20px;
+  background-color: #fff;
+  z-index: 2000;
+}
+
+.sceneContainer {
+  position: absolute;
+  right: 20px;
+  bottom: 40px;
+  z-index: 4000;
+  .table {
+    // width: 200px;
+    // min-height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-color: #fff;
+    border-width: 2px;
+    border-collapse: collapse;
+    color: #fff;
+    th, td {
+      padding: 4px 20px;
+    }
+  }
+}
+
+.cesiumContainer {
+  background: #000;
+  :global {
+    .cesium-viewer {
+      position: relative;
+      height: 700px;
+      overflow: auto;
+    }
+
+    .cesium-viewer-cesiumWidgetContainer {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50%;
+      height: 560px;
+    }
+  }
+}
