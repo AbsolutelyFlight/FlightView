@@ -2,47 +2,43 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import 'cesium/Widgets/widgets.css';
 import { useRequest } from '@umijs/hooks';
-import { fetchFlightDetail } from "./service";
+import { fetchFlightDetail, fetchFlights, FlightItem, FlightListItem } from "./service";
 import styles from './index.less';
-import { Table, Row, Col, Input, Button, Spin } from 'antd';
+import token from '../../utils/token'
+import { Table, Button, Spin } from 'antd';
 
 
 
 export default (): React.ReactNode => {
-  const [flightData, setFlightData] = useState<string[]>([]);
-  const [flightId, setFlightId] = useState<string>('89414de8-f9f7-41d9-83fa-5ea6be5a9eef');
+  const [flightData, setFlightData] = useState<FlightItem[]>([]);
+  const [flightId, setFlightId] = useState<number>(0);
+  const [flightList, setFlightList] = useState<FlightListItem[]>([]);
   const [viewer, setViewer] = useState<any>(null);
 
-
-  const handleChangeFlightId = (e:any) => {
-    if (!e.target.value) return;
-    console.log('val:::', e.target.value);
-    setFlightId(e.target.value);
-  }
-
-  const {loading, run} = useRequest(fetchFlightDetail, {
+  const {loading, run: runFetchFlightDetail} = useRequest(fetchFlightDetail, {
     manual: true,
     onSuccess: res => {
       if (!res) return;
-      setFlightData(res);
+      setFlightData(res.path);
+    }
+  });
+
+  const {loading: fetchFlightsLoading, run: runFetchFlights} = useRequest(fetchFlights, {
+    manual: true,
+    onSuccess: res => {
+      if (!res) return;
+      setFlightList(res);
     }
   });
 
   useEffect(() => {
-    Cesium.Ion.defaultAccessToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5NWI4ZGI3Zi0xYmM1LTQ2NmUtODBiZi05YWJiN2IzY2M4MTAiLCJpZCI6MzY2OTQsImlhdCI6MTYwMzkzMzY5Mn0.2LDJvHeCrCtf1_gyUuToe41PJYntAPAErRJowGcffD8';
-
+    Cesium.Ion.defaultAccessToken = token;
     const viewerObj = new Cesium.Viewer('cesiumContainer', {
       terrainProvider: Cesium.createWorldTerrain(),
     });
     setViewer(viewerObj);
-    run(flightId);
+    runFetchFlights();
   }, []);
-
-  const handleSearchFlightDetail = useCallback(() => {
-      run(flightId);
-    },[flightId]
-  )
 
   useEffect(
     () => {
@@ -50,7 +46,7 @@ export default (): React.ReactNode => {
       renderFlight(flightData);
   }, [flightData]);
 
-    const renderFlight = (flightList:string[]) => {
+    const renderFlight = (flightList: FlightItem[]) => {
     
     viewer.entities.removeAll();
 
@@ -118,28 +114,19 @@ export default (): React.ReactNode => {
 
   }
 
-  const handleCheckDetail = (val: any) => {
+  const handleCheckDetail = (val: FlightListItem) => {
     console.log('check Detail', val);
+    if (val) {
+      setFlightId(val.id);
+      runFetchFlightDetail(val.id);
+    }
   };
-
-  const dataSource = [
-    {
-      ID: '123123',
-      name: 'ray',
-      date: '2019-10-20',
-    },
-    {
-      ID: '123123',
-      name: 'ray',
-      date: '2019-10-20',
-    },
-  ];
 
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'ID',
-      key: 'ID',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
       title: '姓名',
@@ -153,7 +140,7 @@ export default (): React.ReactNode => {
     },
     {
       title: '操作',
-      render: (val: any) => (
+      render: (val: FlightListItem) => (
         <Button onClick={() => handleCheckDetail(val)} type="primary">
           查看详情
         </Button>
@@ -161,71 +148,18 @@ export default (): React.ReactNode => {
     },
   ];
 
-  const sceneColumns = [
-    {
-      title: '场压',
-      dataIndex: 'fieldPressure',
-      key: 'fieldPressure',
-    },
-    {
-      title: '真空速',
-      dataIndex: 'vacuumVelocity',
-      key: 'vacuumVelocity',
-    },
-    {
-      title: '即使速',
-      dataIndex: 'imSpeed',
-      key: 'imSpeed',
-    },
-    {
-      title: 'TCAS',
-      dataIndex: 'TCAS',
-      key: 'TCAS',
-    },
-    {
-      title: 'TAWS',
-      dataIndex: 'TAWS',
-      key: 'TAWS',
-    },
-    {
-      title: '模式',
-      dataIndex: 'mode',
-      key: 'mode',
-    },
-    {
-      title: '待飞距',
-      dataIndex: 'waitingDistance',
-      key: 'waitingDistance',
-    },
-    {
-      title: '偏航角',
-      dataIndex: 'yawAngle',
-      key: 'yawAngle',
-    },
-  ];
-
-  const sceneData = [
-    {
-      fieldPressure: '200',
-      vacuumVelocity: '300',
-      imSpeed: '1000',
-      waitingDistance: '2000',
-      yawAngle: '30',
-    },
-  ];
-
   return (
     <PageContainer>
       <div className={styles.tableContainer}>
-        <Row style={{ padding: '20px 0' }}>
+        {/* <Row style={{ padding: '20px 0' }}>
           <Col span={16}>
             <Input onChange={handleChangeFlightId} placeholder="请输入用户ID" />
           </Col>
           <Col>
             <Button type="primary" onClick={handleSearchFlightDetail}>查找</Button>
           </Col>
-        </Row>
-        <Table dataSource={dataSource} columns={columns} />
+        </Row> */}
+        <Table loading={fetchFlightsLoading} dataSource={flightList} columns={columns} />
       </div>
 
       <div className={styles.sceneContainer}>
