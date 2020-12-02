@@ -10,7 +10,7 @@ export interface FlightItem {
 
 export interface FlightListItem {
   name: string,
-  id: number,
+  flightId: string,
   date: string
 }
 

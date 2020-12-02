@@ -47,7 +47,7 @@ export default (): React.ReactNode => {
   }, [flightData]);
 
     const renderFlight = (flightList: FlightItem[]) => {
-    
+
     viewer.entities.removeAll();
 
     viewer.scene.primitives.add(Cesium.createOsmBuildings());
@@ -82,7 +82,7 @@ export default (): React.ReactNode => {
         dataPoint.latitude,
         dataPoint.height,
       );
-     
+
       positionProperty.addSample(time, position);
 
       viewer.entities.add({
@@ -117,8 +117,8 @@ export default (): React.ReactNode => {
   const handleCheckDetail = (val: FlightListItem) => {
     console.log('check Detail', val);
     if (val) {
-      setFlightId(val.id);
-      runFetchFlightDetail(val.id);
+      setFlightId(val.flightId);
+      runFetchFlightDetail(val.flightId);
     }
   };
 
